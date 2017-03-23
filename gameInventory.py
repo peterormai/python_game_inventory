@@ -19,12 +19,7 @@ def add_to_inventory(inv, added_items):
         else:
             inv.update({i:1})   
 
-add_to_inventory(firstInv,dragon_loot)
-display_inventory(firstInv)
-
-
-
-    
+  
 
 
 # Takes your inventory and displays it in a well-organized table with 
@@ -34,8 +29,46 @@ display_inventory(firstInv)
 # - "count,desc" means the table is ordered by count (of items in the inventory) 
 #   in descending order
 # - "count,asc" means the table is ordered by count in ascending order
-def print_table(inventory, order=None):
-    pass
+def print_table(inv, order=None):
+    print("Inventory:")
+
+  
+
+    # countos sort is b és c szerint írja ki, utána total number, mért nem jó az item name??
+    
+    b = max(len(x) for x in inv) + 10
+    asdf = []
+    for i in inv:
+        asdf.append(inv[i])
+    c = len(str(max(asdf)))
+
+    placeholder1 = '{count:>{0}} {item:>' + str(b-3) + '}'
+    print(placeholder1.format(str(c),count="count", item="item name"))
+    print('-'*(b+c+1))
+
+    if order == "count,desc":
+        a = sorted(inv, key=inv.get, reverse=True)
+        for i in a:
+            placeholder = '{count:>{0}} {item:>' + str(b) + '}'
+            print(placeholder.format(str(c),count=str(inv[i]), item=i))
+    elif order == "count,asc":
+        a = sorted(inv, key=inv.get)
+        for i in a:
+            print(str(inv[i]) + " " + i)
+    elif None:
+        pass
+    else:
+        pass
+    print('-'*(b+c+1))
+
+ 
+
+
+add_to_inventory(firstInv,dragon_loot)
+display_inventory(firstInv) 
+print_table(firstInv, "count,desc")
+
+    
 
 
 # Imports new inventory items from a file
