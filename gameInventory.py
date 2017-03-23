@@ -1,15 +1,30 @@
 # This is the file where you must work. Write code in the functions, create new functions, 
 # so they work according to the specification
 
+firstInv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
+dragon_loot = ['ruby', 'gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby', 'ruby']
+
 # Displays the inventory.
-def display_inventory(inventory):
-    # test
-    pass
-
-
+def display_inventory(inv):
+    print("Inventory:")
+    for k, v in inv.items():
+        print(v,k)
+    print("Total number of items: " + str(sum(inv.values())) + "\n")
+    
 # Adds to the inventory dictionary a list of items from added_items.
-def add_to_inventory(inventory, added_items):
-    pass
+def add_to_inventory(inv, added_items):
+    for i in added_items:
+        if i in inv:
+            inv[i] += 1
+        else:
+            inv.update({i:1})   
+
+add_to_inventory(firstInv,dragon_loot)
+display_inventory(firstInv)
+
+
+
+    
 
 
 # Takes your inventory and displays it in a well-organized table with 
@@ -28,6 +43,8 @@ def print_table(inventory, order=None):
 # "import_inventory.csv". The import automatically merges items by name.
 # The file format is plain text with comma separated values (CSV).
 def import_inventory(inventory, filename="import_inventory.csv"):
+    import filename
+    print(filename)
     pass
 
 
