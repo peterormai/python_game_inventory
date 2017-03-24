@@ -2,7 +2,7 @@
 # so they work according to the specification
 
 inv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
-dragon_loot = ['ruby', 'gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby', 'ruby']
+dragon_loot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
 
 # Displays the inventory.
 def display_inventory(inventory):
@@ -74,6 +74,13 @@ def import_inventory(inventory, filename="import_inventory.csv"):
     file.close()
 
     newStuff = new_loot.strip().split(',')
+
+    for i in newStuff:
+        if i in inventory:
+            inventory[i] += 1
+        else:
+            inventory.update({i:1})
+
     return newStuff
 
 
