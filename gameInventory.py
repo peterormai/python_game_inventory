@@ -95,15 +95,10 @@ def export_inventory(inventory, filename="export_inventory.csv"):
     for i in inventory:
         file.write((i + ',') * inventory[i])
     file.close()
-
-    file = open(filename, 'r')
-    read_file = file.read()
-    form = read_file.strip(',')
-    file.close()
-
-    file = open(filename, 'w')
-    file.write(form)
-    file.close()  
+    import os
+    with open(filename, 'rb+') as filehandle:
+        filehandle.seek(-1, os.SEEK_END)
+        filehandle.truncate()
 
     
 
