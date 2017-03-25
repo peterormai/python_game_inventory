@@ -6,9 +6,9 @@ dragon_loot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
 
 # Displays the inventory.
 def display_inventory(inventory):
-    print("inventory:")
-    for k, v in inventory.items():
-        print(v,k)
+    print("Inventory:")
+    for keys, values in inventory.items():
+        print(values,keys)
     print("Total number of items: " + str(sum(inventory.values())) + "\n")
     
 # Adds to the inventory dictionary a list of items from added_items.
@@ -20,9 +20,6 @@ def add_to_inventory(inventory, added_items):
             inventory.update({i:1})
     return inventory   
 
-  
-
-
 # Takes your inventory and displays it in a well-organized table with 
 # each column right-justified. The input argument is an order parameter (string)
 # which works as the following:
@@ -30,32 +27,34 @@ def add_to_inventory(inventory, added_items):
 # - "count,desc" means the table is ordered by count (of items in the inventory) 
 #   in descending order
 # - "count,asc" means the table is ordered by count in ascending order
-def print_table(inventory, order=None):
-    print("inventory:")
-    b = max(len(x) for x in inventory) + 5
-    asdf = []
-    for i in inventory:
-        asdf.append(inventory[i])
-    c = len(str(max(asdf))) + 5
 
-    placeholder1 = '{count:>{0}} {item:>' + str(b) + '}'
-    print(placeholder1.format(str(c),count="count", item="item name"))
-    print('-'*(b+c+1))
+def right_ordered_column(firstColumnLength, secondColumnLength, firstColumnContent, secondColumnContent):
+    placeholder = '{count:>{0}} {item:>' + str(secondColumnLength) + '}'
+    print(placeholder.format(str(firstColumnLength),count=str(firstColumnContent), item=str(secondColumnContent)))
+
+def print_table(inventory, order=None):
+    print("Inventory:")
+    maxLengthOfKeys = max(len(x) for x in inventory) + 5
+    listOfValues = []
+    for i in inventory:
+        listOfValues.append(inventory[i])
+    maxLengthOfValues = len(str(max(listOfValues))) + 5
+    right_ordered_column(maxLengthOfValues, maxLengthOfKeys, "count", "item name")
+    print('-'*(maxLengthOfKeys+maxLengthOfValues+1))
 
     if order == "count,desc":
-        a = sorted(inventory, key=inventory.get, reverse=True)
-        for i in a:
-            placeholder = '{count:>{0}} {item:>' + str(b) + '}'
-            print(placeholder.format(str(c),count=str(inventory[i]), item=i))
+        sortedInventory = sorted(inventory, key=inventory.get, reverse=True)
+        for i in sortedInventory:
+            right_ordered_column(maxLengthOfValues, maxLengthOfKeys, inventory[i], i)
     elif order == "count,asc":
-        a = sorted(inventory, key=inventory.get)
-        for i in a:
-            print(str(inventory[i]) + " " + i)
-    elif None:
-        pass
+        sortedInventory = sorted(inventory, key=inventory.get)
+        for i in sortedInventory:
+            right_ordered_column(maxLengthOfValues, maxLengthOfKeys, inventory[i], i)
     else:
-        pass
-    print('-'*(b+c+1))
+        for i in inventory:
+            right_ordered_column(maxLengthOfValues, maxLengthOfKeys, inventory[i], i)
+
+    print('-'*(maxLengthOfKeys+maxLengthOfValues+1))
     print("Total number of items: " + str(sum(inventory.values())) + "\n")
 
 
@@ -70,18 +69,23 @@ def print_table(inventory, order=None):
 # The file format is plain text with comma separated values (CSV).
 def import_inventory(inventory, filename="import_inventory.csv"):
     file = open(filename, 'r')
-    new_loot = file.read()
+    read_new_loot = file.read()
     file.close()
 
-    newStuff = new_loot.strip().split(',')
+    form_new_loot = read_new_loot.strip().split(',')
 
+    new_loot = add_to_inventory(inventory,form_new_loot)
+    """
     for i in newStuff:
         if i in inventory:
-            inventory[i] += 1
+            pass
         else:
-            inventory.update({i:1})
+            inventory.update({i:0})
+    """
 
-    return newStuff
+# ha ugyanazt teszem be mint a table printnél akkor a teszten átmegy de kétszer fogja számolni amit importálok
+
+    return new_loot
 
 
 
@@ -100,7 +104,7 @@ def export_inventory(inventory, filename="export_inventory.csv"):
 
 
 inv = add_to_inventory(inv,dragon_loot)
-inv = add_to_inventory(inv,import_inventory(inv))
+import_inventory(inv)
 display_inventory(inv) 
-print_table(inv, "count,desc")
+print_table(inv, "count,asc")
 export_inventory(inv)
